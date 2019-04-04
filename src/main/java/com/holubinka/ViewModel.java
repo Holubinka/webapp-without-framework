@@ -1,0 +1,34 @@
+package com.holubinka;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ViewModel {
+    private final String view;
+    private final Map<String, Object> attributes = new HashMap<>();
+    private final String REDIRECT_TEMPLATE = "/WEB-INF/views/%s.jsp";
+
+    public ViewModel(String view) {
+        this.view = view;
+    }
+
+    public static ViewModel of(String view) {
+        return new ViewModel(view);
+    }
+
+    public String getView() {
+        return view;
+    }
+
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    public void addAttribute(String name, Object o) {
+        this.attributes.put(name, o);
+    }
+
+    public String getRedirectUri() {
+        return String.format(REDIRECT_TEMPLATE, view);
+    }
+}
