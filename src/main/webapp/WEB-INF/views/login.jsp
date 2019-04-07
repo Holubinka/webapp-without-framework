@@ -20,11 +20,15 @@
         <input id="login" type="text" placeholder="Enter Username" name="username" required>
 
         <label for="psw"><b>Password</b></label>
-        <input id="psw" type="password" placeholder="Enter Password" name="psw" required>
+        <input id="psw" type="password" placeholder="Enter Password" name="password" required>
 
         <button type="submit">Login</button>
     </div>
 </form>
+
+<c:if test="${error!=null}">
+<p style="color: red; margin-left: 105px">Username or Password is incorrect!</p>
+</c:if>
 
 </body>
 </html>
