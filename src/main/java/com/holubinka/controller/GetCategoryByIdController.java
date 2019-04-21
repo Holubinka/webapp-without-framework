@@ -1,10 +1,11 @@
 package com.holubinka.controller;
 
-import com.holubinka.Request;
-import com.holubinka.ViewModel;
+import com.holubinka.web.Request;
+import com.holubinka.web.ViewModel;
 import com.holubinka.service.CategoryService;
 
-import static java.util.Collections.emptyList;
+import java.util.Collections;
+
 
 public class GetCategoryByIdController implements Controller {
     private final CategoryService categoryService;
@@ -19,6 +20,6 @@ public class GetCategoryByIdController implements Controller {
         Long id = Long.parseLong(param);
         return categoryService.getById(id)
                 .map(c -> ViewModel.of("category").withAttribute("category", c))
-                .orElseGet(() -> ViewModel.of("category").withAttribute("category", emptyList()));
+                .orElseGet(() -> ViewModel.of("category").withAttribute("category", Collections.emptyList()));
     }
 }

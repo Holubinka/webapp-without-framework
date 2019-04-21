@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>MainServlet</servlet-name>
-        <servlet-class>com.holubinka.MainServlet</servlet-class>
+        <servlet-class>com.holubinka.web.MainServlet</servlet-class>
     </servlet>
 
 
@@ -14,6 +14,16 @@
         <servlet-name>MainServlet</servlet-name>
         <url-pattern>/servlet/*</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <filter-name>UserFilter</filter-name>
+        <filter-class>com.holubinka.web.UserFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <servlet-name>MainServlet</servlet-name>
+    </filter-mapping>
 
     <session-config>
         <tracking-mode>COOKIE</tracking-mode>

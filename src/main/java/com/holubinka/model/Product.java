@@ -1,14 +1,24 @@
 package com.holubinka.model;
 
 public class Product {
+    private Long id;
     private String productName;
     private String description;
     private double price;
 
-    public Product(String productName, String description, double price) {
+    public Product(Long id,String productName, String description, double price) {
+        this.id = id;
         this.productName = productName;
         this.description = description;
         this.price = price;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getProductName() {

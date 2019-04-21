@@ -1,37 +1,26 @@
 package com.holubinka.service;
 
+import com.holubinka.dao.CategoryDao;
 import com.holubinka.model.Category;
-import com.holubinka.model.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class CategoryServiceImpl implements CategoryService {
 
-    private static List<Category> categories = new ArrayList<>();
+    private final CategoryDao categoryDao;
 
-    static {
-        Product product = new Product("iPhone","Apple product", 999.99);
-        Product product2 = new Product("samsung","korean product", 700.99);
-        List<Product> products =new ArrayList<>();
-        products.add(product);
-        products.add(product2);
-        Category category = new Category(1L,"Mobile Phones","Best ever phones");
-        category.setProducts(products);
-        categories.add(category);
-        categories.add(new Category(2L,"Shoes","Italian shoes"));
-        categories.add(new Category(3L, "TVs","Chines"));
+    public CategoryServiceImpl(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
     }
 
     @Override
     public List<Category> getAll() {
-
-        return categories;
+        return null;
     }
 
     @Override
     public Optional<Category> getById(Long id) {
-        return categories.stream().filter(c->c.getId().equals(id)).findFirst();
+        return null;
     }
 }

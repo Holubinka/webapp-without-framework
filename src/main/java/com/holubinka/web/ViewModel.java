@@ -1,14 +1,17 @@
-package com.holubinka;
+package com.holubinka.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ViewModel {
     private final String view;
     private final Map<String, Object> attributes = new HashMap<>();
     private final String REDIRECT_TEMPLATE = "/WEB-INF/views/%s.jsp";
+    private final List<Cookie> cookies = new ArrayList<>();
 
-    public ViewModel(String view) {
+    private ViewModel(String view) {
         this.view = view;
     }
 
@@ -31,5 +34,14 @@ public class ViewModel {
 
     public String getRedirectUri() {
         return String.format(REDIRECT_TEMPLATE, view);
+    }
+
+    public List<Cookie> getCookies() {
+        return new ArrayList<>(cookies);
+    }
+
+    public ViewModel withCookie(Cookie cookie) {
+        cookies.add(cookie);
+        return this;
     }
 }

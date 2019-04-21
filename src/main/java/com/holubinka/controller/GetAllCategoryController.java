@@ -1,7 +1,7 @@
 package com.holubinka.controller;
 
-import com.holubinka.Request;
-import com.holubinka.ViewModel;
+import com.holubinka.web.Request;
+import com.holubinka.web.ViewModel;
 import com.holubinka.service.CategoryService;
 
 public class GetAllCategoryController implements Controller {
