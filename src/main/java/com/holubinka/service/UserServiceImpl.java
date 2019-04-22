@@ -26,11 +26,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> addUser(User user) {
+    public Optional<User> save(User user) {
         String hashedPassword = sha256(user.getPassword());
         user.setPassword(hashedPassword);
         user.setToken(generateToken());
-        return Optional.ofNullable(userDao.addUser(user));
+        return Optional.ofNullable(userDao.save(user));
     }
 
     @Override

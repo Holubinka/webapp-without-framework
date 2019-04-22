@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserDao {
 
-    User addUser(User user);
+    User save(User user);
 
     User getByToken(String token);
 

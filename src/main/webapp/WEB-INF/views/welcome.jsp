@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -13,5 +14,6 @@
 </head>
 <body>
         <h1>Hello ${user.username}!</h1>
+        <h3>You can visit this page <a href="<c:url value="/servlet/categories"/>">Categories</a></h3>
 </body>
 </html>

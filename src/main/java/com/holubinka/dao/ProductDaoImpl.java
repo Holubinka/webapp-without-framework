@@ -6,49 +6,45 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDaoImpl implements ProductDao {
-
-    Connection connection;
+public class ProductDaoImpl extends AbstractDao<Product,Long> implements ProductDao {
 
     public ProductDaoImpl(Connection connection) {
-        this.connection = connection;
+        super(connection);
     }
 
     @Override
-    public Product getProductById(Long id) {
-        String query = "SELECT P.ID AS P_ID, " +
-                "P.PRODUCTS_NAME AS P_NAME, " +
-                "P.PRODUCTS_DESCRIPTION AS P_DESC, " +
-                "P.PRICE AS P_PRICE FROM PRODUCTS P " +
-                "WHERE P.ID = ?";
+    public Product get(Long id) {
+        return super.get(id);
+    }
 
-        PreparedStatement statement;
-        ResultSet resultSet;
-        Product result = null;
+
+    public List<Product> getAllByCategoryId(Long id) {
+        String query = "SELECT P.ID, " +
+                "P.PRODUCTS_NAME, " +
+                "P.PRODUCTS_DESCRIPTION, " +
+                "P.PRICE " +
+                "FROM PRODUCTS P " +
+                "WHERE P.FK_CATEGORY_ID = ?";
+        List<Product> products = new ArrayList<>();
         try {
-            statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, id);
-            resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                while (!resultSet.isAfterLast()) {
-                    result = getProductFromResultSet(resultSet);
-                    resultSet.next();
-                }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new Product();
+                product.setId(resultSet.getLong("ID"));
+                product.setProductName(resultSet.getString("PRODUCTS_NAME"));
+                product.setDescription(
+                        resultSet.getString("PRODUCTS_DESCRIPTION"));
+                product.setPrice(resultSet.getDouble("PRICE"));
+                products.add(product);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return result;
-    }
-    private Product getProductFromResultSet(ResultSet rs) throws SQLException {
-        Long id = rs.getLong("P_ID");
-        String productName = rs.getString("P_NAME");
-        String productDesc = rs.getString("P_DESC");
-        double price = rs.getDouble("P_PRICE");
-        return new Product(id, productName, productDesc, price);
+        return products;
     }
 }

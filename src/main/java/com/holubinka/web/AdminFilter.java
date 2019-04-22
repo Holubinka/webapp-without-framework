@@ -4,6 +4,9 @@ import com.holubinka.model.Role;
 import com.holubinka.model.User;
 import com.holubinka.service.UserService;
 
+import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,16 +15,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static com.holubinka.Factory.getConnection;
 import static com.holubinka.Factory.getUserDaoImpl;
 import static com.holubinka.Factory.getUserServiceImpl;
 
-public class UserFilter implements Filter {
 
+public class AdminFilter implements Filter {
     private UserService userService;
 
     @Override
@@ -37,12 +37,14 @@ public class UserFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         Cookie[] cookies = req.getCookies();
 
-        if (req.getRequestURI().equals("/servlet/login")) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else if (cookies != null) {
-            processRequestCookies(servletRequest, servletResponse, filterChain, cookies);
+        if (req.getRequestURI().startsWith("/servlet/admin")) {
+            if (cookies != null) {
+                processRequestCookies(servletRequest, servletResponse, filterChain, cookies);
+            } else {
+                dispatchNotAllowed(servletRequest, servletResponse);
+            }
         } else {
-            dispatchNotAllowed(servletRequest, servletResponse);
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 
@@ -61,7 +63,7 @@ public class UserFilter implements Filter {
                 .map(Cookie::getValue)
                 .flatMap(userService::findByToken);
         boolean isAuthorized = user.map(u -> u.getRoles().stream()
-                .anyMatch(r -> r.getRoleName().equals(Role.RoleName.USER)))
+                .anyMatch(r -> r.getRoleName().equals(Role.RoleName.ADMIN)))
                 .orElse(false);
         if (isAuthorized) {
             filterChain.doFilter(servletRequest, servletResponse);
@@ -73,7 +75,6 @@ public class UserFilter implements Filter {
     private void dispatchNotAllowed(ServletRequest servletRequest,
                                     ServletResponse servletResponse)
             throws ServletException, IOException {
-
         servletRequest.getRequestDispatcher("/WEB-INF/views/notAllowed.jsp")
                 .forward(servletRequest, servletResponse);
     }

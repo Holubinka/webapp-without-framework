@@ -1,8 +1,11 @@
 package com.holubinka.model;
 
+import com.holubinka.annotations.Table;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "USERS")
 public class User {
     private Long id;
     private String username;
@@ -24,6 +27,9 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User() {
     }
 
     public Long getId() {

@@ -1,8 +1,11 @@
 package com.holubinka.model;
 
+import com.holubinka.annotations.Table;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "ROLES")
 public class Role {
     private Long id;
     private RoleName roleName;
@@ -11,6 +14,9 @@ public class Role {
     public Role(Long id, RoleName roleName) {
         this.id = id;
         this.roleName = roleName;
+    }
+
+    public Role() {
     }
 
     public Long getId() {

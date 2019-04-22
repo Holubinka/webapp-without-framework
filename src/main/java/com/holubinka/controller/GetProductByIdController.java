@@ -18,7 +18,7 @@ public class GetProductByIdController implements Controller {
     public ViewModel process(Request req) {
         String param = req.getParam("p_id")[0];
         Long id = Long.parseLong(param);
-        return productService.getById(id)
+        return productService.get(id)
                 .map(p -> ViewModel.of("product").withAttribute("product", p))
                 .orElseGet(() -> ViewModel.of("product").withAttribute("product", Collections.emptyList()));
     }

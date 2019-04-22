@@ -18,7 +18,7 @@ public class GetCategoryByIdController implements Controller {
     public ViewModel process(Request req) {
         String param = req.getParam("c_id")[0];
         Long id = Long.parseLong(param);
-        return categoryService.getById(id)
+        return categoryService.get(id)
                 .map(c -> ViewModel.of("category").withAttribute("category", c))
                 .orElseGet(() -> ViewModel.of("category").withAttribute("category", Collections.emptyList()));
     }

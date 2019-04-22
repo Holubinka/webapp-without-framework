@@ -1,16 +1,22 @@
 package com.holubinka.model;
 
+import com.holubinka.annotations.Table;
+
+@Table(name = "PRODUCTS")
 public class Product {
     private Long id;
-    private String productName;
-    private String description;
+    private String productsName;
+    private String productsDescription;
     private double price;
 
-    public Product(Long id,String productName, String description, double price) {
+    public Product(Long id,String productsName, String productsDescription, double price) {
         this.id = id;
-        this.productName = productName;
-        this.description = description;
+        this.productsName = productsName;
+        this.productsDescription = productsDescription;
         this.price = price;
+    }
+
+    public Product() {
     }
 
     public Long getId() {
@@ -22,19 +28,19 @@ public class Product {
     }
 
     public String getProductName() {
-        return productName;
+        return productsName;
     }
 
     public void setProductName(String productName) {
-        this.productName = productName;
+        this.productsName = productName;
     }
 
     public String getDescription() {
-        return description;
+        return productsDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.productsDescription = description;
     }
 
     public double getPrice() {
