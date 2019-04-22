@@ -16,7 +16,10 @@ import static com.holubinka.Factory.getCategoryDao;
 import static com.holubinka.Factory.getCategoryService;
 import static com.holubinka.Factory.getConnection;
 import static com.holubinka.Factory.getGetCategoryByIdController;
+import static com.holubinka.Factory.getGetProductByIdController;
 import static com.holubinka.Factory.getLoginUserController;
+import static com.holubinka.Factory.getProductDao;
+import static com.holubinka.Factory.getProductService;
 import static com.holubinka.Factory.getUserDaoImpl;
 import static com.holubinka.Factory.getUserServiceImpl;
 
@@ -29,6 +32,7 @@ public class MainServlet extends HttpServlet {
         controllerMap.put(Request.of("POST","/servlet/login"),getLoginUserController(getUserServiceImpl(getUserDaoImpl(getConnection()))));
         controllerMap.put(Request.of("GET","/servlet/categories"), getAllCategoryController(getCategoryService(getCategoryDao(getConnection()))));
         controllerMap.put(Request.of("GET","/servlet/category"), getGetCategoryByIdController(getCategoryService(getCategoryDao(getConnection()))));
+        controllerMap.put(Request.of("GET","/servlet/product"), getGetProductByIdController(getProductService(getProductDao(getConnection()))));
         controllerMap.put(Request.of("GET","/servlet/admin"), r -> ViewModel.of("admin"));
     }
 

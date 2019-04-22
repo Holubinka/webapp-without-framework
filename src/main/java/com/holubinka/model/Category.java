@@ -9,8 +9,8 @@ public class Category {
     private String description;
     private List<Product> products = new ArrayList<>();
 
-    public Category(Long id,String categoryName, String description) {
-        this.id =id;
+    public Category(Long id, String categoryName, String description) {
+        this.id = id;
         this.categoryName = categoryName;
         this.description = description;
     }

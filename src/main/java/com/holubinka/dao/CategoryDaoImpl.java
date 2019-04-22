@@ -3,10 +3,7 @@ package com.holubinka.dao;
 import com.holubinka.model.Category;
 import com.holubinka.model.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +43,33 @@ public class CategoryDaoImpl implements CategoryDao {
         return result;
     }
 
+    @Override
+    public List<Category> getAll() {
+        String query = "SELECT C.ID AS C_ID, " +
+                "C.CATEGORY_NAME AS C_NAME, " +
+                "C.CATEGORY_DESCRIPTION AS C_DESC " +
+                "FROM CATEGORIES C ";
+
+        PreparedStatement statement;
+        ResultSet resultSet;
+        List<Category> result = new ArrayList<>();
+        try {
+            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                while (!resultSet.isAfterLast()) {
+                    result.add(getCategoryFromResultSet(resultSet));
+                    resultSet.next();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     private Category getCategoryWithProductsFromResultSet(ResultSet rs) throws SQLException {
         List<Product> products = new ArrayList<>();
         Category result = null;
@@ -61,7 +85,6 @@ public class CategoryDaoImpl implements CategoryDao {
 
         return result;
     }
-
     private Category getCategoryFromResultSet(ResultSet rs) throws SQLException {
         Long id = rs.getLong("C_ID");
         String categoryName = rs.getString("C_NAME");

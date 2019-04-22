@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
 
@@ -71,6 +72,32 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public Optional<User> getByUsername(String username) {
+        String query = "select u.id as u_id, " +
+                "u.username, " +
+                "u.password, " +
+                "u.token, " +
+                "u.first_name, " +
+                "u.last_name " +
+                "from users u " +
+                "where u.username = ? ";
+        PreparedStatement statement;
+        ResultSet resultSet;
+        User result = null;
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()){
+                result = getUserFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(result);
     }
 
     private User getUserWithRolesFromResultSet(ResultSet rs) throws SQLException {
