@@ -1,6 +1,5 @@
 package com.holubinka.service;
 
-import com.holubinka.DBEmulator;
 import com.holubinka.dao.UserDao;
 import com.holubinka.model.User;
 
@@ -19,9 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> authorize(User user) {
-        Optional<User> u = DBEmulator.getUsers().stream().
-                filter(r -> r.getUsername().equals(user.getUsername()))
-                .findFirst();
+        Optional<User> u = userDao.getByUsername(user.getUsername());
 
         return u.map(User::getPassword)
                 .filter(p -> p.equals(sha256(user.getPassword())))
@@ -29,11 +26,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> addUser(User user) {
+    public Optional<User> save(User user) {
         String hashedPassword = sha256(user.getPassword());
         user.setPassword(hashedPassword);
         user.setToken(generateToken());
-        return Optional.ofNullable(userDao.addUser(user));
+        return Optional.ofNullable(userDao.save(user));
     }
 
     @Override

@@ -13,9 +13,9 @@
 </head>
 <body>
     <h3>Category name: <c:out value="${category.categoryName}"/></h3>
-    <p>Description: <c:out value="${category.description}"/></p>
+    <p>Description: <c:out value="${category.categoryDescription}"/></p>
     <c:forEach items="${category.products}" var="p">
-        <p>Products: <c:out value="${p.productName}"/></p>
+        <p>Products: <a href="<c:url value="/servlet/product?p_id=${p.id}"/>"><c:out value="${p.productName}"/></a></p>
     </c:forEach>
 
 </body>

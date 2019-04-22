@@ -10,39 +10,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class UserDaoImpl implements UserDao {
-
-    private final Connection connection;
+public class UserDaoImpl extends AbstractDao<User,Long> implements UserDao {
 
     public UserDaoImpl(Connection connection) {
-        this.connection = connection;
+        super(connection);
     }
 
     @Override
-    public User addUser(User user) {
-        String query = "INSERT INTO USERS VALUES(?, ?, ?, ?, ?, ?)";
-
-        PreparedStatement statement;
-
-        try {
-            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            statement.setNull(1, -5);
-            statement.setString(2, user.getUsername());
-            statement.setString(3, user.getPassword());
-            statement.setString(4, user.getToken());
-            statement.setString(5, user.getFirstName());
-            statement.setString(6, user.getLastName());
-            statement.executeUpdate();
-            ResultSet keys = statement.getGeneratedKeys();
-
-            if (keys.next()) {
-                user.setId(keys.getLong(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return user;
+    public User save(User user) {
+       return super.save(user);
     }
 
     @Override
@@ -71,6 +49,32 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public Optional<User> getByUsername(String username) {
+        String query = "select u.id as u_id, " +
+                "u.username, " +
+                "u.password, " +
+                "u.token, " +
+                "u.first_name, " +
+                "u.last_name " +
+                "from users u " +
+                "where u.username = ? ";
+        PreparedStatement statement;
+        ResultSet resultSet;
+        User result = null;
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()){
+                result = getUserFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(result);
     }
 
     private User getUserWithRolesFromResultSet(ResultSet rs) throws SQLException {

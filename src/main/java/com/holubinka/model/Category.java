@@ -1,18 +1,24 @@
 package com.holubinka.model;
 
+import com.holubinka.annotations.Table;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "CATEGORIES")
 public class Category {
     private Long id;
     private String categoryName;
-    private String description;
+    private String categoryDescription;
     private List<Product> products = new ArrayList<>();
 
-    public Category(Long id,String categoryName, String description) {
-        this.id =id;
+    public Category(Long id, String categoryName, String categoryDescription) {
+        this.id = id;
         this.categoryName = categoryName;
-        this.description = description;
+        this.categoryDescription = categoryDescription;
+    }
+
+    public Category() {
     }
 
     public Long getId() {
@@ -31,12 +37,12 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCategoryDescription() {
+        return categoryDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCategoryDescription(String categoryDescription) {
+        this.categoryDescription = categoryDescription;
     }
 
     public List<Product> getProducts() {

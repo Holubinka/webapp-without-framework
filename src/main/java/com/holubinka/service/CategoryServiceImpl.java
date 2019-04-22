@@ -16,11 +16,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAll() {
-        return null;
+        return categoryDao.getAll();
     }
 
     @Override
-    public Optional<Category> getById(Long id) {
-        return null;
+    public Optional<Category> get(Long id) {
+        return Optional.ofNullable(categoryDao.getById(id));
     }
 }
